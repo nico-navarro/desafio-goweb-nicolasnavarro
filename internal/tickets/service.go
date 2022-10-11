@@ -1,11 +1,7 @@
 package tickets
 
-import (
-	"github.com/nico-navarro/desafio-goweb-nicolasnavarro/internal/domain"
-)
-
 type Service interface {
-	GetTotalTickets(destination string) ([]domain.Ticket, error)
+	GetTotalTickets(destination string) (int, error)
 	AverageDestination(destination string) (int, error)
 }
 
@@ -19,8 +15,14 @@ func NewService(r Repository) Service {
 	}
 }
 
-func (s *service) GetTotalTickets(destination string) ([]domain.Ticket, error) {
-	return []domain.Ticket{}, nil
+func (s *service) GetTotalTickets(destination string) (int, error) {
+	tickets, err := s.repository.GetTicketByDestination(destination)
+	if err != nil {
+		return 0, err
+	}
+	totalTickets := len(tickets)
+
+	return totalTickets, nil
 }
 
 func (s *service) AverageDestination(destination string) (int, error) {
