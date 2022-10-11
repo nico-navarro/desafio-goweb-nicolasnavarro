@@ -7,42 +7,42 @@ import (
 	"github.com/nico-navarro/desafio-goweb-nicolasnavarro/internal/tickets"
 )
 
-type Service struct {
+type TicketController struct {
 	service tickets.Service
 }
 
-func NewService(s tickets.Service) *Service {
-	return &Service{
+func NewTicketController(s tickets.Service) *TicketController {
+	return &TicketController{
 		service: s,
 	}
 }
 
-func (s *Service) GetTicketsByCountry() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (c *TicketController) GetTicketsByCountry() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 
-		destination := c.Param("dest")
+		destination := ctx.Param("dest")
 
-		tickets, err := s.service.GetTotalTickets(destination)
+		tickets, err := c.service.GetTotalTickets(destination)
 		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error(), nil)
+			ctx.String(http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
-		c.JSON(200, tickets)
+		ctx.JSON(200, tickets)
 	}
 }
 
-func (s *Service) AverageDestination() gin.HandlerFunc {
-	return func(c *gin.Context) {
+func (c *TicketController) AverageDestination() gin.HandlerFunc {
+	return func(ctx *gin.Context) {
 
-		destination := c.Param("dest")
+		destination := ctx.Param("dest")
 
-		avg, err := s.service.AverageDestination(destination)
+		avg, err := c.service.AverageDestination(destination)
 		if err != nil {
-			c.String(http.StatusInternalServerError, err.Error(), nil)
+			ctx.String(http.StatusInternalServerError, err.Error(), nil)
 			return
 		}
 
-		c.JSON(200, avg)
+		ctx.JSON(200, avg)
 	}
 }

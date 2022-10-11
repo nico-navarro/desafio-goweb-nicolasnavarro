@@ -7,23 +7,30 @@ import (
 	"strconv"
 
 	"github.com/gin-gonic/gin"
+	"github.com/nico-navarro/desafio-goweb-nicolasnavarro/cmd/server/handler"
 	"github.com/nico-navarro/desafio-goweb-nicolasnavarro/internal/domain"
+	"github.com/nico-navarro/desafio-goweb-nicolasnavarro/internal/tickets"
 )
 
 func main() {
 
 	// Cargo csv.
-	_, err := LoadTicketsFromFile("tickets.csv")
+	dbTickets, err := LoadTicketsFromFile("tickets.csv")
 	if err != nil {
 		panic("Couldn't load tickets")
 	}
 
+	ticketRepository := tickets.NewRepository(dbTickets)
+	ticketService := tickets.NewService(ticketRepository)
+	ticketController := handler.NewTicketController(ticketService)
+
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) { c.String(200, "pong") })
-	// Rutas a desarollar:
 
-	// GET - “/ticket/getByCountry/:dest”
-	// GET - “/ticket/getAverage/:dest”
+	ticketRouter := r.Group("/ticket")
+	ticketRouter.GET("/getByCountry/:dest", ticketController.GetTicketsByCountry())
+	ticketRouter.GET("/getAverage/:dest", ticketController.AverageDestination())
+
 	if err := r.Run(); err != nil {
 		panic(err)
 	}
