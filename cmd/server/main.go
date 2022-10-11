@@ -13,7 +13,7 @@ import (
 func main() {
 
 	// Cargo csv.
-	_, err := LoadTicketsFromFile("../../tickets.csv")
+	_, err := LoadTicketsFromFile("tickets.csv")
 	if err != nil {
 		panic("Couldn't load tickets")
 	}
