@@ -13,3 +13,12 @@
 
 # Dependency directories (remove the comment below to include it)
 # vendor/
+
+# macOS trash
+.DS_Store
+
+# Environment Variables
+.env
+
+# Sample Data
+*.csv
