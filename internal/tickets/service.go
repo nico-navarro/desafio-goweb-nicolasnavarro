@@ -6,7 +6,7 @@ import (
 
 type Service interface {
 	GetTotalTickets(destination string) ([]domain.Ticket, error)
-	AverageDestination(destination string) ([]domain.Ticket, error)
+	AverageDestination(destination string) (int, error)
 }
 
 type service struct {
@@ -23,6 +23,6 @@ func (s *service) GetTotalTickets(destination string) ([]domain.Ticket, error) {
 	return []domain.Ticket{}, nil
 }
 
-func (s *service) AverageDestination(destination string) ([]domain.Ticket, error) {
-	return []domain.Ticket{}, nil
+func (s *service) AverageDestination(destination string) (int, error) {
+	return 0, nil
 }
